@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "naver-hanjas-save",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.naver.com/*"
+      ],
+      "js": [
+        "inject.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "content.js"
+  ]
+}
