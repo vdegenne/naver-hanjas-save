@@ -2678,16 +2678,27 @@
             this.saveHanjas();
         }
         render() {
-            console.log('rendered');
             return html `${this.hanjas.map(h => {
-            return html `<div class="hanja">${h}</div>`;
+            return html `
+      <div class="hanja" @click="${(e) => this.onHanjaClick(h, e)}">${h}</div>`;
         })}`;
+        }
+        onHanjaClick(hanja, e) {
+            if (!e.altKey) {
+                window.open(`https://hanja.dict.naver.com/hanja?q=${encodeURIComponent(hanja)}`, '_blank');
+            }
+            else {
+                this.hanjas.splice(this.hanjas.indexOf(hanja), 1);
+                this.saveHanjas();
+                this.requestUpdate();
+            }
         }
         loadHanjas() {
             this.hanjas = [...document.querySelectorAll('.myword .hanja')].map(el => el.textContent.trim());
             if (localStorage.getItem('saved-hanjas')) {
                 this.hanjas = this.hanjas.concat(JSON.parse(localStorage.getItem('saved-hanjas').toString()));
             }
+            this.hanjas = [...new Set(this.hanjas)];
         }
         saveHanjas() {
             localStorage.setItem('saved-hanjas', JSON.stringify(this.hanjas));
@@ -2701,6 +2712,8 @@
   }
   .hanja {
     font-size: 24px;
+    margin: 5px;
+    cursor: pointer;
   }
   `;
     __decorate([

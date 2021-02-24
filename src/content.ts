@@ -20,14 +20,27 @@ class HanjasFrame extends LitElement {
   }
   .hanja {
     font-size: 24px;
+    margin: 5px;
+    cursor: pointer;
   }
   `
 
   render() {
-    console.log('rendered');
     return html`${this.hanjas.map(h => {
-      return html`<div class="hanja">${h}</div>`
+      return html`
+      <div class="hanja" @click="${(e: MouseEvent) => this.onHanjaClick(h, e)}">${h}</div>`
     })}`
+  }
+
+  onHanjaClick (hanja:string, e: MouseEvent) {
+    if (!e.altKey) {
+      window.open(`https://hanja.dict.naver.com/hanja?q=${encodeURIComponent(hanja)}`, '_blank')
+    }
+    else {
+      this.hanjas.splice(this.hanjas.indexOf(hanja), 1)
+      this.saveHanjas();
+      this.requestUpdate()
+    }
   }
 
   loadHanjas () {
@@ -35,6 +48,7 @@ class HanjasFrame extends LitElement {
     if (localStorage.getItem('saved-hanjas')) {
       this.hanjas = this.hanjas.concat(JSON.parse(localStorage.getItem('saved-hanjas')!.toString()));
     }
+    this.hanjas = [...new Set(this.hanjas)]
   }
 
   saveHanjas () {
