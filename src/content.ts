@@ -44,7 +44,7 @@ class HanjasFrame extends LitElement {
   }
 
   loadHanjas () {
-    this.hanjas = [...document.querySelectorAll('.myword .hanja')].map(el => el.textContent!.trim());
+    // this.hanjas = [...document.querySelectorAll('.myword .hanja')].map(el => el.textContent!.trim());
     if (localStorage.getItem('saved-hanjas')) {
       this.hanjas = this.hanjas.concat(JSON.parse(localStorage.getItem('saved-hanjas')!.toString()));
     }
